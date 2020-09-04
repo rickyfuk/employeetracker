@@ -28,7 +28,9 @@ CREATE TABLE staffrole (
   /* for deparment ID 
     - add constraint for easier to drop the foreign relationship if needed
     - define the foreign relationship with the id from department table */
-  CONSTRAINT FK_departmentid FOREIGN KEY (department_id) REFERENCES department(id),
+  CONSTRAINT FK_departmentid 
+  FOREIGN KEY (department_id) 
+  REFERENCES department(id) ON UPDATE CASCADE ON DELETE RESTRICT,
   PRIMARY KEY (id)
 );
 
@@ -48,11 +50,15 @@ CREATE TABLE employee (
   /* for role ID 
     - add constraint for easier to drop the foreign relationship if needed
     - define the foreign relationship with the role id from staffrole table */
+  CONSTRAINT FK_roleid 
+  FOREIGN KEY (role_id) 
+  REFERENCES staffrole(id)ON UPDATE CASCADE ON DELETE CASCADE,
   /* for manager ID 
     - add constraint for easier to drop the foreign relationship if needed
     - define the foreign relationship with the employee id from employee table */
-  CONSTRAINT FK_roleid FOREIGN KEY (role_id) REFERENCES staffrole(id),
-  CONSTRAINT FK_managerid FOREIGN KEY (manager_id) REFERENCES employee(id),
+  CONSTRAINT FK_managerid 
+  FOREIGN KEY (manager_id) 
+  REFERENCES employee(id)ON UPDATE CASCADE ON DELETE CASCADE,
   PRIMARY KEY (id)
 );
 

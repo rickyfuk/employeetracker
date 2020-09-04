@@ -26,13 +26,13 @@ VALUES ("Head of Gryffindor","40000",1),
 -- ("Slytherin Member","11000",1),
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
-VALUES ("Minerva", "McGonagall", 1, null)
+VALUES ("Minerva", "McGonagall", 1, null),
 ("Harry", "Potter", 2, 1),
 ("Ron", "Weasley", 3, 1),
-("Pomona", "Sprout", 4, null)
+("Pomona", "Sprout", 4, null),
 ("Newton", "Scamander", 5, 4),
 ("Ernest", "Macmillan", 6, 4),
-("Filius", "Flitwick", 7, null)
+("Filius", "Flitwick", 7, null),
 ("Luna", "Lovegood", 8, 7),
 ("Cho", "Chang", 9, 7);
 -- for future test
