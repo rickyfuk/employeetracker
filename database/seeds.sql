@@ -8,6 +8,12 @@ VALUES ("Gryffindor"),
 ("Ravenclaw");
 -- VALUES ("Slytherin");
 
+-- Insert 6 values in the staffrole table
+INSERT INTO staffrole (title,salary,department_id)
+VALUES ("Head","12000"),
+("Hufflepuff"),
+("Ravenclaw");
+
 -- INSERT INTO colleges (name)
 -- VALUES ("Boston College");
 
