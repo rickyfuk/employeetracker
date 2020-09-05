@@ -4,11 +4,35 @@ const managerChoice = [];
 const roleChoice = [];
 const departmentChoice = [];
 
+// for the main landing question
+const mainselection = async () => {
+	const answer = await inquirer.prompt([
+		{
+			type: 'list',
+			name: 'mainChoice',
+			message: 'What kind of action do you want yo do?',
+			choices: [
+				'View all employees',
+				'View all employees by department',
+				'View all employees by roles',
+				'Add a new employee',
+				'View all departments',
+				'Add a new department',
+				'View all roles',
+				'Add a new role',
+				'Update employee roles',
+				'Exit the application',
+			],
+		},
+	]);
+	return answer;
+};
+
+// for the department selection function
 const deptselection = async () => {
 	const depts = await db.findAllDept();
 	for (let i = 0; i < depts.length; i++) {
 		departmentChoice.push(depts[i].name);
-		console.log(departmentChoice);
 	}
 	const answer = await inquirer.prompt([
 		{
@@ -21,17 +45,24 @@ const deptselection = async () => {
 	return answer;
 };
 
-// console.log(deptselection);
-module.exports = { deptselection };
-// async function listAllDept() {
-// 	const depts = await db.findAllDept();
-// 	for (let i = 0; i < depts.length; i++) {
-// 		departmentChoice.push(depts[i].name);
-// 		console.log(departmentChoice);
-// 	}
-// }
-// listAllDept();
-// console.log(departmentChoice);
+// for the role selection function
+const roleselection = async () => {
+	const roles = await db.findAllRole();
+	for (let i = 0; i < roles.length; i++) {
+		roleChoice.push(roles[i].title);
+	}
+	const answer = await inquirer.prompt([
+		{
+			type: 'list',
+			name: 'role',
+			message: 'What is the department of this employee?',
+			choices: roleChoice,
+		},
+	]);
+	return answer;
+};
+
+module.exports = { mainselection, deptselection, roleselection };
 
 // module.exports = {
 // 	// main question

@@ -64,3 +64,13 @@ CREATE TABLE employee (
 
 
 
+-- view all staff
+SELECT 
+S2.id, S2.first_name, S2.last_name,
+staffrole.title,staffrole.salary,
+department.name,
+(CONCAT(s1.first_name, ' ', s1.last_name)) AS manager
+FROM employee As S1
+Right JOIN employee as S2 on (S1.id = S2.manager_id)
+LEFT JOIN staffrole on (S2.role_id = staffrole.id)
+LEFT JOIN department on (staffrole.department_id = department.id);
