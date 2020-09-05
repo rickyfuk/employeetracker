@@ -12,6 +12,11 @@ class DB {
 		return this.connection.query(query);
 	}
 
+	findAllDept() {
+		const query = `SELECT name 
+        FROM department;`;
+		return this.connection.query(query);
+	}
 	// viewAllEmployee() {
 	// 	// const query = '
 	// 	// '

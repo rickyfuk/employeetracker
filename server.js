@@ -3,14 +3,20 @@ const logo = require('./logo');
 // get the consloe table module for display the result
 const cTable = require('console.table');
 //
-const inquirer = require('inquirer');
+// const inquirer = require('inquirer');
 const prompts = require('./prompt');
 const db = require('./database');
 
 async function viewAllDept() {
 	const depts = await db.viewAllDept();
-
 	console.table(depts);
 }
 
-// viewAllDept();
+async function addNewStaff() {
+	// const deptschoice = await db.findAllDept();
+	const deptlistresult = await prompts.deptselection();
+	console.log(deptlistresult);
+}
+
+viewAllDept();
+addNewStaff();
