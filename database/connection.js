@@ -18,10 +18,8 @@ const connection = mysql.createConnection({
 	database: 'employeetracker',
 });
 
-// connection.connect(function (err) {
-// 	if (err) throw err;
-// 	console.log('connected as id ' + connection.threadId);
-// 	connection.end();
-// });
-// connection.connect();
-console.log(connection.query);
+connection.connect();
+
+connection.query = util.promisify(connection.query);
+
+module.exports = connection;
