@@ -43,14 +43,13 @@ class DB {
 		return this.connection.query(query);
 	}
 
-	findAllManager() {
+	pickAManager() {
 		const query = `
 		SELECT 
 		s2.id,
 		(CONCAT(s2.first_name, ' ', s2.last_name)) AS manager
 		FROM employee as S1
-		right JOIN employee as S2 on (S2.id = s1.id)
-		where s2.manager_id is null;`;
+		right JOIN employee as S2 on (S2.id = s1.id)`;
 		return this.connection.query(query);
 	}
 
@@ -113,6 +112,19 @@ class DB {
 			role_id: adr[2],
 			manager_id: adr[3],
 		};
+		return this.connection.query(query, post);
+	}
+
+	addANewDept(adr) {
+		const query = `
+		 INSERT INTO
+		 department
+		 SET ?
+		`;
+		const post = {
+			name: adr,
+		};
+
 		return this.connection.query(query, post);
 	}
 }

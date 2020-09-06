@@ -71,31 +71,9 @@ const roleselection = async () => {
 // to generata a manager list for select a manager
 // (use for select the manager for new staff or amend staff)
 const managerselection = async () => {
-	const managers = await db.findAllManager();
+	const managers = await db.pickAManager();
 	const managerChoice = ['None'];
-	const managerChoiceid = [''];
-	for (let i = 0; i < managers.length; i++) {
-		managerChoice.push(managers[i].manager);
-		managerChoiceid.push(managers[i].id);
-	}
-	const answer = await inquirer.prompt([
-		{
-			type: 'list',
-			name: 'manager',
-			message: 'Please select a manager',
-			choices: managerChoice,
-		},
-	]);
-	const finalanswer = managerChoiceid[managerChoice.indexOf(answer.manager)];
-	return finalanswer;
-};
-
-// to generata a manager list without none selection for select a manager
-// (use for view manager list)
-const managerselectionNoNone = async () => {
-	const managers = await db.findAllManager();
-	const managerChoice = [];
-	const managerChoiceid = [];
+	const managerChoiceid = [null];
 	for (let i = 0; i < managers.length; i++) {
 		managerChoice.push(managers[i].manager);
 		managerChoiceid.push(managers[i].id);
@@ -158,14 +136,37 @@ const lastNameSelection = async () => {
 	return answer;
 };
 
+// get the new department name
+const newDeptNameSelection = async () => {
+	const answer = await inquirer.prompt([
+		{
+			type: 'input',
+			name: 'newDeptName',
+			message: 'Please enter a new department name',
+			// validate if the input is letter only
+			validate: function (value) {
+				let pass = false;
+				if (value.match(/^[A-Za-z]+$/) && value != '') {
+					pass = true;
+				}
+				if (pass) {
+					return true;
+				}
+				return 'Please enter the name with at least one letter and with letter only';
+			},
+		},
+	]);
+	return answer;
+};
+
 module.exports = {
 	mainselection,
 	deptselection,
 	roleselection,
 	managerselection,
-	managerselectionNoNone,
 	firstNameSelection,
 	lastNameSelection,
+	newDeptNameSelection,
 };
 
 // module.exports = {

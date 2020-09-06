@@ -72,7 +72,15 @@ async function addANewEmployee() {
 	console.log(
 		`Employee ${firstname.firstName} ${lastname.lastName} has been added into database`
 	);
-	await viewAllEmployee();
+	init();
+}
+
+async function addANewDept() {
+	const newDept = await prompts.newDeptNameSelection();
+	const result = newDept.newDeptName;
+	await db.addANewDept(result);
+	console.log(`Department ${result} has been added into database`);
+	init();
 }
 
 async function init() {
@@ -93,6 +101,9 @@ async function init() {
 			break;
 		case 'View all departments':
 			viewAllDept();
+			break;
+		case 'Add a new department':
+			addANewDept();
 			break;
 	}
 }
