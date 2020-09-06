@@ -1,8 +1,5 @@
 const db = require('./database');
 const inquirer = require('inquirer');
-const managerChoice = [];
-const roleChoice = [];
-const departmentChoice = [];
 
 // for the main landing question
 const mainselection = async () => {
@@ -28,41 +25,148 @@ const mainselection = async () => {
 	return answer;
 };
 
-// for the department selection function
+// to generata a department list for select a department
 const deptselection = async () => {
 	const depts = await db.findAllDept();
+	const departmentChoice = [];
+	const departmentChoiceid = [];
 	for (let i = 0; i < depts.length; i++) {
 		departmentChoice.push(depts[i].name);
+		departmentChoiceid.push(depts[i].id);
 	}
 	const answer = await inquirer.prompt([
 		{
 			type: 'list',
 			name: 'department',
-			message: 'What is the department of this employee?',
+			message: 'Please select a department',
 			choices: departmentChoice,
 		},
 	]);
-	return answer;
+	const finalanswer =
+		departmentChoiceid[departmentChoice.indexOf(answer.department)];
+	return finalanswer;
 };
 
-// for the role selection function
+// to generata a role list for select a role
 const roleselection = async () => {
 	const roles = await db.findAllRole();
+	const roleChoice = [];
+	const roleChoiceid = [];
 	for (let i = 0; i < roles.length; i++) {
 		roleChoice.push(roles[i].title);
+		roleChoiceid.push(roles[i].id);
 	}
 	const answer = await inquirer.prompt([
 		{
 			type: 'list',
 			name: 'role',
-			message: 'What is the department of this employee?',
+			message: 'Please select a role',
 			choices: roleChoice,
+		},
+	]);
+	const finalanswer = roleChoiceid[roleChoice.indexOf(answer.role)];
+	return finalanswer;
+};
+
+// to generata a manager list for select a manager
+// (use for select the manager for new staff or amend staff)
+const managerselection = async () => {
+	const managers = await db.findAllManager();
+	const managerChoice = ['None'];
+	const managerChoiceid = [''];
+	for (let i = 0; i < managers.length; i++) {
+		managerChoice.push(managers[i].manager);
+		managerChoiceid.push(managers[i].id);
+	}
+	const answer = await inquirer.prompt([
+		{
+			type: 'list',
+			name: 'manager',
+			message: 'Please select a manager',
+			choices: managerChoice,
+		},
+	]);
+	const finalanswer = managerChoiceid[managerChoice.indexOf(answer.manager)];
+	return finalanswer;
+};
+
+// to generata a manager list without none selection for select a manager
+// (use for view manager list)
+const managerselectionNoNone = async () => {
+	const managers = await db.findAllManager();
+	const managerChoice = [];
+	const managerChoiceid = [];
+	for (let i = 0; i < managers.length; i++) {
+		managerChoice.push(managers[i].manager);
+		managerChoiceid.push(managers[i].id);
+	}
+	const answer = await inquirer.prompt([
+		{
+			type: 'list',
+			name: 'manager',
+			message: 'Please select a manager',
+			choices: managerChoice,
+		},
+	]);
+	const finalanswer = managerChoiceid[managerChoice.indexOf(answer.manager)];
+	return finalanswer;
+};
+
+// get the first name for the staff
+const firstNameSelection = async () => {
+	const answer = await inquirer.prompt([
+		{
+			type: 'input',
+			name: 'firstName',
+			message: 'Please enter the first name of the new employee',
+			// validate if the input is letter only
+			validate: function (value) {
+				let pass = false;
+				if (value.match(/^[A-Za-z]+$/) && value != '') {
+					pass = true;
+				}
+				if (pass) {
+					return true;
+				}
+				return 'Please enter the name with at least one letter and with letter only';
+			},
 		},
 	]);
 	return answer;
 };
 
-module.exports = { mainselection, deptselection, roleselection };
+// get the last name for the staff
+const lastNameSelection = async () => {
+	const answer = await inquirer.prompt([
+		{
+			type: 'input',
+			name: 'lastName',
+			message: 'Please enter the last name of the new employee',
+			// validate if the input is letter only
+			validate: function (value) {
+				let pass = false;
+				if (value.match(/^[A-Za-z]+$/) && value != '') {
+					pass = true;
+				}
+				if (pass) {
+					return true;
+				}
+				return 'Please enter the name with at least one letter and with letter only';
+			},
+		},
+	]);
+	return answer;
+};
+
+module.exports = {
+	mainselection,
+	deptselection,
+	roleselection,
+	managerselection,
+	managerselectionNoNone,
+	firstNameSelection,
+	lastNameSelection,
+};
 
 // module.exports = {
 // 	// main question

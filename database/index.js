@@ -13,7 +13,7 @@ class DB {
 	}
 
 	findAllDept() {
-		const query = `SELECT name 
+		const query = `SELECT id,name 
         FROM department;`;
 		return this.connection.query(query);
 	}
@@ -25,8 +25,32 @@ class DB {
 	}
 
 	findAllRole() {
-		const query = `SELECT title 
+		const query = `SELECT id,title 
         FROM staffRole;`;
+		return this.connection.query(query);
+	}
+
+	viewAllManager() {
+		const query = `
+		SELECT S2.id, S2.first_name, S2.last_name,
+			   staffrole.title,staffrole.salary,	
+			   department.name
+		FROM employee as S1
+		right JOIN employee as S2 on (S2.id = s1.id)
+		LEFT JOIN staffrole on (S2.role_id = staffrole.id)
+		LEFT JOIN department on (staffrole.department_id = department.id)
+		WHERE S2.manager_id is null;`;
+		return this.connection.query(query);
+	}
+
+	findAllManager() {
+		const query = `
+		SELECT 
+		s2.id,
+		(CONCAT(s2.first_name, ' ', s2.last_name)) AS manager
+		FROM employee as S1
+		right JOIN employee as S2 on (S2.id = s1.id)
+		where s2.manager_id is null;;`;
 		return this.connection.query(query);
 	}
 
@@ -56,7 +80,7 @@ class DB {
 		Right JOIN employee as S2 on (S1.id = S2.manager_id)
 		LEFT JOIN staffrole on (S2.role_id = staffrole.id)
 		LEFT JOIN department on (staffrole.department_id = department.id)
-		WHERE department.name = ?;
+		WHERE department.id = ?;
 		`;
 		return this.connection.query(query, [adr]);
 	}
@@ -72,7 +96,14 @@ class DB {
 		Right JOIN employee as S2 on (S1.id = S2.manager_id)
 		LEFT JOIN staffrole on (S2.role_id = staffrole.id)
 		LEFT JOIN department on (staffrole.department_id = department.id)
-		WHERE staffrole.title = ?;
+		WHERE staffrole.id = ?;
+		`;
+		return this.connection.query(query, [adr]);
+	}
+
+	addANewEmployee(adr) {
+		const query = `
+		
 		`;
 		return this.connection.query(query, [adr]);
 	}
