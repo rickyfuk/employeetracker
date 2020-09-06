@@ -18,7 +18,7 @@ class DB {
 		return this.connection.query(query);
 	}
 
-	viewAllDept() {
+	viewAllRoles() {
 		const query = `SELECT * 
         FROM staffRole;`;
 		return this.connection.query(query);
@@ -50,7 +50,7 @@ class DB {
 		(CONCAT(s2.first_name, ' ', s2.last_name)) AS manager
 		FROM employee as S1
 		right JOIN employee as S2 on (S2.id = s1.id)
-		where s2.manager_id is null;;`;
+		where s2.manager_id is null;`;
 		return this.connection.query(query);
 	}
 
@@ -103,11 +103,29 @@ class DB {
 
 	addANewEmployee(adr) {
 		const query = `
-		
+		 INSERT INTO
+		 employee
+		 SET ?
 		`;
-		return this.connection.query(query, [adr]);
+		const post = {
+			first_name: adr[0],
+			last_name: adr[1],
+			role_id: adr[2],
+			manager_id: adr[3],
+		};
+		return this.connection.query(query, post);
 	}
 }
 
+// function viewAllDept() {
+// 	const query = `SELECT *
+//         FROM department;`;
+// 	connection.query(query, function (err, res) {
+// 		if (err) throw err;
+// 		console.log(res);
+// 	});
+// }
+
+// viewAllDept();
 // console.log(connection);
 module.exports = new DB(connection);

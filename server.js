@@ -8,8 +8,14 @@ const prompts = require('./prompt');
 const db = require('./database');
 
 async function viewAllDept() {
-	const depts = await db.viewAllDept();
-	console.table(depts);
+	const result = await db.viewAllDept();
+	console.table(result);
+	init();
+}
+
+async function viewAllRoles() {
+	const result = await db.viewAllRoles();
+	console.table(result);
 	init();
 }
 
@@ -27,6 +33,8 @@ async function viewAllDept() {
 
 async function viewAllEmployee() {
 	const allEmployee = await db.viewAllEmployee();
+	// console.log('running');
+	// console.log(allEmployee);
 	console.table(allEmployee);
 	init();
 }
@@ -60,12 +68,16 @@ async function addANewEmployee() {
 	adr.push(roleChoice);
 	const managerChoice = await prompts.managerselection();
 	adr.push(managerChoice);
-	console.log(adr);
+	await db.addANewEmployee(adr);
+	console.log(
+		`Employee ${firstname.firstName} ${lastname.lastName} has been added into database`
+	);
+	await viewAllEmployee();
 }
 
 async function init() {
 	const mainresult = await prompts.mainselection();
-	console.log(mainresult.mainChoice);
+	// console.log(mainresult.mainChoice);
 	switch (mainresult.mainChoice) {
 		case 'View all employees':
 			viewAllEmployee();
@@ -79,9 +91,13 @@ async function init() {
 		case 'Add a new employee':
 			addANewEmployee();
 			break;
+		case 'View all departments':
+			viewAllDept();
+			break;
 	}
 }
 
+// viewAllDept();
 // addNewDept();
 // viewAllEmployee();
 init();
