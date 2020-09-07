@@ -12,17 +12,42 @@ const mainselection = async () => {
 				'View all employees',
 				'View all employees by department',
 				'View all employees by roles',
+				'View all employees by Manager',
 				'Add a new employee',
 				'View all departments',
 				'Add a new department',
 				'View all roles',
 				'Add a new role',
-				'Update employee roles',
+				'Update employee role',
 				'Exit the application',
 			],
 		},
 	]);
 	return answer;
+};
+
+// to generata an employee list for select an employee
+const employeeselection = async () => {
+	const employees = await db.findAllEmployee();
+	const employeeChoice = [];
+	const employeeChoiceid = [];
+	for (let i = 0; i < employees.length; i++) {
+		employeeChoice.push(employees[i].staff_name);
+		employeeChoiceid.push(employees[i].id);
+	}
+	const answer = await inquirer.prompt([
+		{
+			type: 'list',
+			name: 'employee',
+			message: 'Please select an employee',
+			choices: employeeChoice,
+		},
+	]);
+	const finalanswer = [
+		employeeChoiceid[employeeChoice.indexOf(answer.employee)],
+		answer.employee,
+	];
+	return finalanswer;
 };
 
 // to generata a department list for select a department
@@ -208,6 +233,7 @@ const newSalary = async () => {
 
 module.exports = {
 	mainselection,
+	employeeselection,
 	deptselection,
 	roleselection,
 	managerselection,

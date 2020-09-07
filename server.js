@@ -1,12 +1,11 @@
 // start the logo js for displaying the logo
 const logo = require('./logo');
-// get the consloe table module for display the result
+// get the console table module for display the result
 const cTable = require('console.table');
-//
-// const inquirer = require('inquirer');
 const prompts = require('./prompt');
 const db = require('./database');
 
+// function server 1 - view all department
 async function viewAllDept() {
 	const result = await db.viewAllDept();
 	console.table(result);
@@ -18,18 +17,6 @@ async function viewAllRoles() {
 	console.table(result);
 	init();
 }
-
-// async function selectDept() {
-// 	const deptlistresult = await prompts.deptselection();
-// 	// console.log(deptlistresult);
-// 	return deptlistresult;
-// }
-
-// async function selectRole() {
-// 	const rolelistresult = await prompts.roleselection();
-// 	// console.log(rolelistresult);
-// 	return rolelistresult;
-// }
 
 async function viewAllEmployee() {
 	const allEmployee = await db.viewAllEmployee();
@@ -96,11 +83,27 @@ async function addANewRole() {
 	init();
 }
 
+async function updateEmployeeRole() {
+	const result = [];
+	const employeeSelected = await prompts.employeeselection();
+	result.push(employeeSelected[0]);
+	const newRoleID = await prompts.roleselection();
+	result.push(newRoleID);
+	await db.updateRole(result);
+	console.log(
+		`The role for employee ${employeeSelected[1]} has been added into database`
+	);
+	init();
+}
+
+// main function  - take the choice from the user and execute the corresponding fuction
 async function init() {
 	const mainresult = await prompts.mainselection();
-	// console.log(mainresult.mainChoice);
+
 	switch (mainresult.mainChoice) {
+		// Choice 1 - All employee table
 		case 'View all employees':
+			// go to server function
 			viewAllEmployee();
 			break;
 		case 'View all employees by department':
@@ -123,6 +126,9 @@ async function init() {
 			break;
 		case 'Add a new role':
 			addANewRole();
+			break;
+		case 'Update employee role':
+			updateEmployeeRole();
 			break;
 	}
 }
