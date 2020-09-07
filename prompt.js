@@ -22,6 +22,7 @@ const mainselection = async () => {
 				'View all roles',
 				'Add a new role',
 				'Update employee role',
+				"Update employee's manager",
 				'Exit the application',
 			],
 		},

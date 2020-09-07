@@ -185,10 +185,28 @@ class DB {
 		`;
 		const post = [
 			{
-				role_id: adr[0],
+				role_id: adr[1],
 			},
 			{
-				id: adr[1],
+				id: adr[0],
+			},
+		];
+		return this.connection.query(query, post);
+	}
+
+	// function index 14 - query to add a update role for an existing employee
+	updateEmployeeManager(adr) {
+		const query = `
+		UPDATE employee
+		SET ?
+		WHERE ?;
+		`;
+		const post = [
+			{
+				manager_id: adr[1],
+			},
+			{
+				id: adr[0],
 			},
 		];
 		return this.connection.query(query, post);

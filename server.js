@@ -118,6 +118,23 @@ async function updateEmployeeRole() {
 	init();
 }
 
+// function server 10 - update the employee's manager
+async function updateEmployeeManager() {
+	const result = [];
+	// (by function prompt 2) - get the response from the user for which employee's role will be updated
+	const employeeSelected = await prompts.employeeselection();
+	result.push(employeeSelected[0]);
+	// (by function prompt 5) - get the response from the user for which staff would be the manager of this employee
+	const managerChoice = await prompts.managerselection();
+	result.push(managerChoice);
+	// (by function index 14) - input the result response to the query and update the role to the database for the employee
+	await db.updateEmployeeManager(result);
+	console.log(
+		`The role for employee ${employeeSelected[1]} has been added into database`
+	);
+	init();
+}
+
 // main function  - take the choice from the user and execute the corresponding fuction
 async function init() {
 	const mainresult = await prompts.mainselection();
@@ -159,6 +176,10 @@ async function init() {
 		case 'Update employee role':
 			// execute (server function 9)
 			updateEmployeeRole();
+			break;
+		case "Update employee's manager":
+			// excute (server function 10)
+			updateEmployeeManager();
 			break;
 	}
 }
