@@ -83,6 +83,19 @@ async function addANewDept() {
 	init();
 }
 
+async function addANewRole() {
+	const newRole = [];
+	const newTitle = await prompts.newRoleTitle();
+	newRole.push(newTitle.newRoleTitle);
+	const newSalary = await prompts.newSalary();
+	newRole.push(newSalary.newRoleSalary);
+	const deptChoice = await prompts.deptselection();
+	newRole.push(deptChoice);
+	await db.addANewRole(newRole);
+	console.log(`Role ${newTitle.newRoleTitle} has been added into database`);
+	init();
+}
+
 async function init() {
 	const mainresult = await prompts.mainselection();
 	// console.log(mainresult.mainChoice);
@@ -104,6 +117,12 @@ async function init() {
 			break;
 		case 'Add a new department':
 			addANewDept();
+			break;
+		case 'View all roles':
+			viewAllRoles();
+			break;
+		case 'Add a new role':
+			addANewRole();
 			break;
 	}
 }

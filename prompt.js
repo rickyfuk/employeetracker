@@ -159,6 +159,53 @@ const newDeptNameSelection = async () => {
 	return answer;
 };
 
+// get the new role title
+const newRoleTitle = async () => {
+	const answer = await inquirer.prompt([
+		{
+			type: 'input',
+			name: 'newRoleTitle',
+			message: 'Please enter the title for the new role',
+			// validate if the input is letter only
+			validate: function (value) {
+				let pass = false;
+				if (value.match(/^[A-Za-z]+$/) && value != '') {
+					pass = true;
+				}
+				if (pass) {
+					return true;
+				}
+				return 'Please enter the name with at least one letter and with letter only';
+			},
+		},
+	]);
+	return answer;
+};
+
+// get the new role salary
+const newSalary = async () => {
+	const answer = await inquirer.prompt([
+		{
+			type: 'input',
+			name: 'newRoleSalary',
+			message:
+				'Please enter the Salary for the new role (i.e. 92341 for $ 92,341)',
+			// validate if the input is number only
+			validate: function (value) {
+				let pass = false;
+				if (value.match(/^[0-9]+$/) && value.length != 0) {
+					pass = true;
+				}
+				if (pass) {
+					return true;
+				}
+				return 'Please enter a number without any sign or decimal';
+			},
+		},
+	]);
+	return answer;
+};
+
 module.exports = {
 	mainselection,
 	deptselection,
@@ -167,6 +214,8 @@ module.exports = {
 	firstNameSelection,
 	lastNameSelection,
 	newDeptNameSelection,
+	newRoleTitle,
+	newSalary,
 };
 
 // module.exports = {

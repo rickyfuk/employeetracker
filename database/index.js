@@ -124,7 +124,20 @@ class DB {
 		const post = {
 			name: adr,
 		};
+		return this.connection.query(query, post);
+	}
 
+	addANewRole(adr) {
+		const query = `
+		 INSERT INTO
+		 staffrole
+		 SET ?
+		`;
+		const post = {
+			title: adr[0],
+			salary: adr[1],
+			department_id: adr[2],
+		};
 		return this.connection.query(query, post);
 	}
 }
