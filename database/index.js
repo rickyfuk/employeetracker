@@ -195,15 +195,4 @@ class DB {
 	}
 }
 
-// function viewAllDept() {
-// 	const query = `SELECT *
-//         FROM department;`;
-// 	connection.query(query, function (err, res) {
-// 		if (err) throw err;
-// 		console.log(res);
-// 	});
-// }
-
-// viewAllDept();
-// console.log(connection);
 module.exports = new DB(connection);
