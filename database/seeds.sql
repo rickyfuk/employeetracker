@@ -39,3 +39,4 @@ VALUES ("Minerva", "McGonagall", 1, null),
 -- VALUES ("Severus", "Snape", 10, null),
 -- ("Draco", "Malfoy", 11, 10),
 -- ("Gregory", "Goyle", 12, 10),
+-- ("Hermione", "Granger",2,1)
