@@ -187,10 +187,54 @@ async function viewEmployeeByManager() {
 	init();
 }
 
+// function server 15 - exit the application
 async function exit() {
+	// (by function index 18) - end the connection
 	await db.connectionend();
 	console.log('Thanks for using Employee Tracker');
 }
+
+// function server 16 - view all total salary table
+// report the total salary for all staff
+async function viewTotalSalarySpending() {
+	// (by function index 19) - get the data from database to generate the sum of salary
+	const totalSalary = await db.viewAllSalarySum();
+	console.log(`The total salary spending is ${totalSalary[0].salary_total}`);
+	console.log('--------------------------');
+	// (by function index 20) - get the data from database to generate the sum of all department salary
+	const totaldeptSalary = await db.viewAllDeptSalarySum();
+	console.log(`The Department salary spending report`);
+	console.table(totaldeptSalary);
+	init();
+}
+
+// function server 17 - view the salary table (seperate by Department)
+// report the total salary for each department
+async function viewDeptSalarySpending() {
+	// (by function prompt 3) - get the response from the user for which department is required
+	const deptChoice = await prompts.deptselection();
+	// (by function index 21) - get the data from database to generate the sum of salary by department level
+	const totalSalary = await db.viewDeptSalarySum(deptChoice);
+	console.log(
+		`The department ${totalSalary[0].name} salary spending is ${totalSalary[0].salary_total}`
+	);
+	console.log('--------------------------');
+	// (by function index 22) - get the data from database to generate the a job title salary table for the department
+	const deptjobtitleSalary = await db.viewJobSalarytable(deptChoice);
+	console.log(
+		`The Job title salary spending report of Department ${totalSalary[0].name}`
+	);
+	console.table(deptjobtitleSalary);
+	console.log('--------------------------');
+	// (by function index 23) - get the data from database to generate the a salary table for the department
+	const deptindividualSalary = await db.viewInvidualSalarytable(deptChoice);
+	console.log(
+		`The Individual salary spending report of Department ${totalSalary[0].name}`
+	);
+	console.table(deptindividualSalary);
+	init();
+}
+
 // main function  - take the choice from the user and execute the corresponding fuction
 async function init() {
 	const mainresult = await prompts.mainselection();
@@ -253,7 +297,16 @@ async function init() {
 			// excute (server function 14)
 			viewEmployeeByManager();
 			break;
+		case 'View Total Salary Spending':
+			// excute (server function 16)
+			viewTotalSalarySpending();
+			break;
+		case 'View Salary Spending by Department':
+			// excute (server function 17)
+			viewDeptSalarySpending();
+			break;
 		default:
+			// excute (server function 15)
 			exit();
 	}
 }

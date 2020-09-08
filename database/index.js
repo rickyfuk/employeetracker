@@ -267,8 +267,79 @@ class DB {
 		return this.connection.query(query, [adr]);
 	}
 
+	// function index 18 - connection end
 	connectionend() {
 		return this.connection.end();
+	}
+
+	// function index 19 - query to database for the all employee salary data
+	// (for display the result for user)
+	viewAllSalarySum(adr) {
+		const query = `
+		select sum(staffrole.salary) as salary_total
+		from employee
+		LEFT JOIN staffrole on (employee.role_id = staffrole.id)
+		LEFT JOIN department on (staffrole.department_id = department.id)
+		`;
+		return this.connection.query(query, [adr]);
+	}
+
+	// function index 20 - query to database for the all employee salary data (table by department)
+	// (for display the table for user)
+	viewAllDeptSalarySum(adr) {
+		const query = `
+		select department.name,sum(staffrole.salary) as total_salary
+		from employee
+		LEFT JOIN staffrole on (employee.role_id = staffrole.id)
+		LEFT JOIN department on (staffrole.department_id = department.id)
+		group by department.name
+		`;
+		return this.connection.query(query, [adr]);
+	}
+
+	// function index 21 - query to database for the total salary data by the selected department
+	// (for display the result for user)
+	viewDeptSalarySum(adr) {
+		const query = `
+		select department.name,sum(staffrole.salary) as salary_total
+		from employee
+		LEFT JOIN staffrole on (employee.role_id = staffrole.id)
+		LEFT JOIN department on (staffrole.department_id = department.id)
+		where department.id = ?
+		`;
+		return this.connection.query(query, [adr]);
+	}
+
+	// function index 22 - query to database for the selected department job title salary data (table by department)
+	// (for display the table for user)
+	viewJobSalarytable(adr) {
+		const query = `
+		SELECT 	
+		staffrole.title,sum(staffrole.salary)
+		FROM employee As S1
+		Right JOIN employee as S2 on (S1.id = S2.manager_id)
+		LEFT JOIN staffrole on (S2.role_id = staffrole.id)
+		LEFT JOIN department on (staffrole.department_id = department.id)
+		WHERE department.id = ?
+        group by staffrole.title
+		`;
+		return this.connection.query(query, [adr]);
+	}
+
+	// function index 23 - query to database for the selected department employee salary data (table by department)
+	// (for display the table for user)
+	viewInvidualSalarytable(adr) {
+		const query = `
+		SELECT 	
+		(CONCAT(s2.first_name, ' ', s2.last_name)) AS staff_name,
+		staffrole.title,staffrole.salary
+		FROM employee As S1
+		Right JOIN employee as S2 on (S1.id = S2.manager_id)
+		LEFT JOIN staffrole on (S2.role_id = staffrole.id)
+		LEFT JOIN department on (staffrole.department_id = department.id)
+		WHERE department.id = ?
+		`;
+		return this.connection.query(query, [adr]);
 	}
 }
 
