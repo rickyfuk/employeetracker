@@ -44,14 +44,18 @@ class DB {
 	// (for display the table for user)
 	viewAllManager() {
 		const query = `
-		SELECT S2.id, S2.first_name, S2.last_name,
-			   staffrole.title,staffrole.salary,	
-			   department.name as department
-		FROM employee as S1
-		right JOIN employee as S2 on (S2.id = s1.id)
+		select 
+		s1.manager_id, s2.first_name, s2.last_name,
+		staffrole.title,staffrole.salary,
+		department.name as department,
+		count(s1.manager_id) as staff_managing,
+		(CONCAT(s2.first_name, ' ', s2.last_name)) AS manager_full_name
+		from employee as S1
+		Right join employee as s2 on (s1.manager_id = s2.id)
 		LEFT JOIN staffrole on (S2.role_id = staffrole.id)
 		LEFT JOIN department on (staffrole.department_id = department.id)
-		WHERE S2.manager_id is null;`;
+		where s1.manager_id is not null
+		group by s1.manager_id`;
 		return this.connection.query(query);
 	}
 
@@ -194,7 +198,7 @@ class DB {
 		return this.connection.query(query, post);
 	}
 
-	// function index 14 - query to add a update role for an existing employee
+	// function index 14 - query to update the manager for an existing employee
 	updateEmployeeManager(adr) {
 		const query = `
 		UPDATE employee
@@ -210,6 +214,61 @@ class DB {
 			},
 		];
 		return this.connection.query(query, post);
+	}
+
+	// function index 15 - query to update the first name for an existing employee
+	updateEmployeeFirstName(adr) {
+		const query = `
+		UPDATE employee
+		SET ?
+		WHERE ?;
+		`;
+		const post = [
+			{
+				first_name: adr[1],
+			},
+			{
+				id: adr[0],
+			},
+		];
+		return this.connection.query(query, post);
+	}
+
+	// function index 16 - query to update the last name for an existing employee
+	updateEmployeeLastName(adr) {
+		const query = `
+		UPDATE employee
+		SET ?
+		WHERE ?;
+		`;
+		const post = [
+			{
+				last_name: adr[1],
+			},
+			{
+				id: adr[0],
+			},
+		];
+		return this.connection.query(query, post);
+	}
+
+	// function index 17 - query to database for the employee data (seperated by manager)
+	// (for display the table for user)
+	viewEmployeeByManager(adr) {
+		const query = `
+		select employee.id, employee.first_name, employee.last_name,
+		staffrole.title,staffrole.salary,
+		department.name as department
+		from employee
+		LEFT JOIN staffrole on (employee.role_id = staffrole.id)
+		LEFT JOIN department on (staffrole.department_id = department.id)
+		where employee.manager_id = ?;
+		`;
+		return this.connection.query(query, [adr]);
+	}
+
+	connectionend() {
+		return this.connection.end();
 	}
 }
 

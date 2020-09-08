@@ -16,6 +16,7 @@ const mainselection = async () => {
 				'View all employees by department',
 				'View all employees by roles',
 				'View all employees by Manager',
+				'View all Manager',
 				'Add a new employee',
 				'View all departments',
 				'Add a new department',
@@ -23,6 +24,8 @@ const mainselection = async () => {
 				'Add a new role',
 				'Update employee role',
 				"Update employee's manager",
+				"Update employee's First name",
+				"Update employee's Last name",
 				'Exit the application',
 			],
 		},
@@ -247,6 +250,30 @@ const newSalary = async () => {
 	return answer;
 };
 
+// function Prompt 11 - get the manager where pick by the user
+const managerPick = async () => {
+	// connect to function (index 5) to get the manager list from database
+	const managers = await db.viewAllManager();
+	const managerChoice = [];
+	const managerChoiceid = [];
+	for (let i = 0; i < managers.length; i++) {
+		managerChoice.push(managers[i].manager_full_name);
+		managerChoiceid.push(managers[i].manager_id);
+	}
+	// get the manager selection from the list
+	const answer = await inquirer.prompt([
+		{
+			type: 'list',
+			name: 'manager',
+			message: 'Please select a manager',
+			choices: managerChoice,
+		},
+	]);
+	const finalanswer = managerChoiceid[managerChoice.indexOf(answer.manager)];
+	// return the manager employee id
+	return finalanswer;
+};
+
 module.exports = {
 	mainselection,
 	employeeselection,
@@ -258,4 +285,5 @@ module.exports = {
 	newDeptNameSelection,
 	newRoleTitle,
 	newSalary,
+	managerPick,
 };

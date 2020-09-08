@@ -113,7 +113,7 @@ async function updateEmployeeRole() {
 	// (by function index 14) - input the result response to the query and update the role to the database for the employee
 	await db.updateRole(result);
 	console.log(
-		`The role for employee ${employeeSelected[1]} has been added into database`
+		`The role for employee ${employeeSelected[1]} has been updated into database`
 	);
 	init();
 }
@@ -127,14 +127,70 @@ async function updateEmployeeManager() {
 	// (by function prompt 5) - get the response from the user for which staff would be the manager of this employee
 	const managerChoice = await prompts.managerselection();
 	result.push(managerChoice);
-	// (by function index 14) - input the result response to the query and update the role to the database for the employee
+	// (by function index 14) - input the result response to the query and update the manager to the database for the employee
 	await db.updateEmployeeManager(result);
 	console.log(
-		`The role for employee ${employeeSelected[1]} has been added into database`
+		`The Manager for employee ${employeeSelected[1]} has been updated into database`
 	);
 	init();
 }
 
+// function server 11 - update the employee's first name
+async function updateEmployeeFirstName() {
+	const result = [];
+	// (by function prompt 2) - get the response from the user for which employee's role will be updated
+	const employeeSelected = await prompts.employeeselection();
+	result.push(employeeSelected[0]);
+	// (by function prompt 6) - get the response from the user for the first name of the new staff
+	const firstname = await prompts.firstNameSelection();
+	result.push(firstname.firstName);
+	// (by function index 15) - input the result response to the query and update the employee first name to the database for the employee
+	await db.updateEmployeeFirstName(result);
+	console.log(
+		`The First name for employee ${employeeSelected[1]} has been updated into database`
+	);
+	init();
+}
+
+// function server 12 - update the employee's last name
+async function updateEmployeeLastName() {
+	const result = [];
+	// (by function prompt 2) - get the response from the user for which employee's role will be updated
+	const employeeSelected = await prompts.employeeselection();
+	result.push(employeeSelected[0]);
+	// (by function prompt 7) - get the response from the user for the last name of the new staff
+	const lastname = await prompts.lastNameSelection();
+	result.push(lastname.lastName);
+	// (by function index 16) - input the result response to the query and update the employee last name to the database for the employee
+	await db.updateEmployeeLastName(result);
+	console.log(
+		`The last name for employee ${employeeSelected[1]} has been updated into database`
+	);
+	init();
+}
+
+// function server 13 - view all manager table
+async function viewAllManager() {
+	// (by function index 5) - get the data from database for the manager table
+	const result = await db.viewAllManager();
+	console.table(result);
+	init();
+}
+
+// function server 14 - view all employee table (seperated by manager)
+async function viewEmployeeByManager() {
+	// (by function prompt 11) - get the response from the user for which manager is required
+	const managerPick = await prompts.managerPick();
+	// (by function index 17) - get the data from database for the employee table with selected manager
+	const employeeByManager = await db.viewEmployeeByManager(managerPick);
+	console.table(employeeByManager);
+	init();
+}
+
+async function exit() {
+	await db.connectionend();
+	console.log('Thanks for using Employee Tracker');
+}
 // main function  - take the choice from the user and execute the corresponding fuction
 async function init() {
 	const mainresult = await prompts.mainselection();
@@ -181,6 +237,24 @@ async function init() {
 			// excute (server function 10)
 			updateEmployeeManager();
 			break;
+		case "Update employee's First name":
+			// excute (server function 11)
+			updateEmployeeFirstName();
+			break;
+		case "Update employee's Last name":
+			// excute (server function 12)
+			updateEmployeeLastName();
+			break;
+		case 'View all Manager':
+			// excute (server function 13)
+			viewAllManager();
+			break;
+		case 'View all employees by Manager':
+			// excute (server function 14)
+			viewEmployeeByManager();
+			break;
+		default:
+			exit();
 	}
 }
 
