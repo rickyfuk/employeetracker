@@ -8,8 +8,13 @@ const db = require('./database');
 // function server 1 - view all department
 async function viewAllDept() {
 	// (by function index 1) - get the data from database
+	// method 1 - without callback
 	const result = await db.viewAllDept();
 	console.table(result);
+	// method 2 - with callback (for ref only)
+	// db.viewAllDept(function (cb) {
+	// 	console.table(cb);
+	// });
 	init();
 }
 
@@ -311,7 +316,4 @@ async function init() {
 	}
 }
 
-// viewAllDept();
-// addNewDept();
-// viewAllEmployee();
 init();

@@ -10,11 +10,21 @@ class DB {
 
 	// function index 1 - query to database for all dept data
 	// (for display the table for user)
+	// method 1 - without callback
 	viewAllDept() {
-		const query = `SELECT * 
-        FROM department;`;
+		const query = `SELECT *
+	    FROM department;`;
 		return this.connection.query(query);
 	}
+	// method 2 - with callback
+	// viewAllDept(cb) {
+	// 	const query = `SELECT *
+	//     FROM department;`;
+	// 	this.connection.query(query, function (err, res) {
+	// 		if (err) throw err;
+	// 		return cb(res);
+	// 	});
+	// }
 
 	// function index 2 - query to database for all dept data with ID and dapartment name
 	// (this function designate for other function when they need a dept list for selection)
