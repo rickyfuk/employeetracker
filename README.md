@@ -151,6 +151,7 @@ node server.js
 ```
 
 2. The user will get the 17 options to perform different functions on the main page.
+3. Please make sure the password for your database has been enter on the connection.js before the application is running
 
 # Code Style
 
